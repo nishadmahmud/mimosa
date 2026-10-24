@@ -25,11 +25,11 @@ export default function AddToCartButton({
       className={
         className ||
         (compact
-          ? "rounded-full bg-forest px-3 py-1.5 text-xs font-medium tracking-wide text-cream transition hover:bg-forest-deep"
-          : "w-full rounded-full bg-forest px-6 py-3 text-sm font-medium tracking-wide text-cream transition hover:bg-forest-deep sm:w-auto")
+          ? "rounded-full bg-forest px-3 py-1.5 text-xs font-medium tracking-wide text-cream transition duration-300 hover:bg-forest-deep hover:scale-[1.03] active:scale-[0.97]"
+          : "w-full rounded-full bg-forest px-6 py-3 text-sm font-medium tracking-wide text-cream transition duration-300 hover:bg-forest-deep hover:scale-[1.02] active:scale-[0.98] sm:w-auto")
       }
     >
-      {added ? "Added" : compact ? "Add" : "Add to cart"}
+      {added ? "Added ✓" : compact ? "Add" : "Add to cart"}
     </button>
   );
 }

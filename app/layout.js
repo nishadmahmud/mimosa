@@ -29,6 +29,12 @@ export const metadata = {
   },
   description:
     "Handmade organic skincare and haircare from Bangladesh. Reveal Your True Beauty — BEYOUTIFUL.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {

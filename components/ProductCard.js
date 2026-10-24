@@ -15,15 +15,15 @@ export default function ProductCard({ product }) {
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-cover transition duration-500 group-hover:scale-[1.03]"
+          className="object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
         />
       </Link>
       <div className="mt-4 flex flex-1 flex-col">
-        <p className="text-xs tracking-[0.15em] text-gold uppercase">
+        <p className="text-xs tracking-[0.15em] text-gold uppercase transition duration-300 group-hover:tracking-[0.2em]">
           {product.weight}
         </p>
         <Link href={`/products/${product.slug}`}>
-          <h3 className="font-serif mt-1 text-xl text-forest-deep transition group-hover:text-forest">
+          <h3 className="font-serif mt-1 text-xl text-forest-deep transition duration-300 group-hover:text-forest">
             {product.shortName}
           </h3>
         </Link>

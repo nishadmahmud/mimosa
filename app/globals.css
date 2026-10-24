@@ -60,7 +60,7 @@ body {
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -77,28 +77,94 @@ body {
   }
 }
 
+@keyframes soft-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes soft-pop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-fade-up {
-  animation: fade-up 0.9s ease-out both;
+  animation: fade-up 0.7s ease-out both;
 }
 
 .animate-fade-in {
-  animation: fade-in 1.1s ease-out both;
+  animation: fade-in 0.8s ease-out both;
+}
+
+.animate-soft-zoom {
+  animation: soft-zoom 18s ease-out forwards;
+}
+
+.animate-soft-pop {
+  animation: soft-pop 0.35s ease-out both;
+}
+
+.animate-menu-in {
+  animation: menu-in 0.25s ease-out both;
 }
 
 .animate-delay-1 {
-  animation-delay: 0.15s;
+  animation-delay: 0.12s;
 }
 
 .animate-delay-2 {
-  animation-delay: 0.3s;
+  animation-delay: 0.24s;
+}
+
+.animate-delay-3 {
+  animation-delay: 0.36s;
 }
 
 .product-lift {
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 .product-lift:hover {
-  transform: translateY(-6px);
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-soft-zoom,
+  .animate-soft-pop,
+  .animate-menu-in {
+    animation: none !important;
+  }
+
+  .product-lift:hover {
+    transform: none;
+  }
 }
 
 .prose-legal h2 {
