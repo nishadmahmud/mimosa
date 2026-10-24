@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
@@ -25,7 +25,30 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function ProductPage({ params }) {
+function ProductFallback() {
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      <div className="mb-8 h-3 w-24 animate-pulse rounded bg-sage-deep/60" />
+      <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
+        <div className="aspect-square animate-pulse bg-sage" />
+        <div className="space-y-4">
+          <div className="h-3 w-32 animate-pulse rounded bg-sage-deep/50" />
+          <div className="h-10 w-3/4 animate-pulse rounded bg-sage-deep/60" />
+          <div className="h-4 w-1/2 animate-pulse rounded bg-sage-deep/40" />
+          <div className="mt-6 h-8 w-28 animate-pulse rounded bg-sage-deep/50" />
+          <div className="mt-8 h-12 w-40 animate-pulse rounded-full bg-sage-deep/50" />
+          <div className="mt-6 space-y-2">
+            <div className="h-3 w-full animate-pulse rounded bg-sage-deep/40" />
+            <div className="h-3 w-5/6 animate-pulse rounded bg-sage-deep/40" />
+            <div className="h-3 w-4/6 animate-pulse rounded bg-sage-deep/40" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+async function ProductContent({ params }) {
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) notFound();
@@ -125,5 +148,13 @@ export default async function ProductPage({ params }) {
         </section>
       )}
     </div>
+  );
+}
+
+export default function ProductPage({ params }) {
+  return (
+    <Suspense fallback={<ProductFallback />}>
+      <ProductContent params={params} />
+    </Suspense>
   );
 }

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { site } from "@/lib/site";
 
 export const metadata = {
@@ -87,12 +88,12 @@ export default function ContactPage() {
             Browse the shop, add products to your cart, and complete checkout
             with Cash on Delivery. We&apos;ll confirm your order over WhatsApp.
           </p>
-          <a
+          <Link
             href="/shop"
             className="mt-6 inline-block rounded-full bg-forest px-6 py-3 text-sm font-medium text-cream hover:bg-forest-deep"
           >
             Go to shop
-          </a>
+          </Link>
           <p className="mt-8 text-xs text-muted">
             Trade licence: {site.tradeLicence}
           </p>

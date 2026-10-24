@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
@@ -21,7 +22,26 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function CategoryPage({ params }) {
+function CategoryFallback() {
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <div className="h-3 w-16 animate-pulse rounded bg-sage-deep/50" />
+      <div className="mt-3 h-10 w-48 animate-pulse rounded bg-sage-deep/60" />
+      <div className="mt-3 h-4 w-72 max-w-full animate-pulse rounded bg-sage-deep/40" />
+      <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="space-y-3">
+            <div className="aspect-[4/5] animate-pulse bg-sage" />
+            <div className="h-4 w-2/3 animate-pulse rounded bg-sage-deep/50" />
+            <div className="h-3 w-1/2 animate-pulse rounded bg-sage-deep/40" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+async function CategoryContent({ params }) {
   const { category: slug } = await params;
   const category = getCategory(slug);
   if (!category) notFound();
@@ -68,5 +88,13 @@ export default async function CategoryPage({ params }) {
         </div>
       )}
     </div>
+  );
+}
+
+export default function CategoryPage({ params }) {
+  return (
+    <Suspense fallback={<CategoryFallback />}>
+      <CategoryContent params={params} />
+    </Suspense>
   );
 }
