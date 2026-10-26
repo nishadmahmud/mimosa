@@ -1,8 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import BlogSection from "@/components/BlogSection";
 import ProductCard from "@/components/ProductCard";
 import VideoPanel from "@/components/VideoPanel";
-import { categories, products } from "@/lib/products";
+import {
+  getCatalogBlogs,
+  getCatalogCategories,
+  getCatalogProducts,
+} from "@/lib/catalog";
 import { formatPrice, site } from "@/lib/site";
 
 const results = [
@@ -44,9 +49,27 @@ const categoryVisuals = {
   "lip-care": "/images/products/lip-balm.jpg",
 };
 
-const featured = products.find((p) => p.slug === "hair-solution") || products[0];
+const fallbackCategoryImages = [
+  "/images/lifestyle/skin-cleanser-flyer.jpg",
+  "/images/lifestyle/hand-feet-flyer.jpg",
+  "/images/lifestyle/hair-solution-flyer.jpg",
+  "/images/products/lip-balm.jpg",
+  "/images/brand/lineup-green.jpg",
+];
 
-export default function Home() {
+export default async function Home() {
+  const [products, categories, blogs] = await Promise.all([
+    getCatalogProducts(),
+    getCatalogCategories(),
+    getCatalogBlogs(),
+  ]);
+
+  const featured =
+    products.find((p) => /hair/i.test(p.slug) || /hair/i.test(p.name)) ||
+    products[0];
+
+  const homeBlogs = blogs.slice(0, 4);
+
   return (
     <>
       {/* Hero — brand first, one composition */}
@@ -104,14 +127,18 @@ export default function Home() {
             Shop by ritual
           </h2>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {categories.map((cat) => (
+            {categories.slice(0, 4).map((cat, index) => (
               <Link
                 key={cat.slug}
                 href={`/shop/${cat.slug}`}
                 className="group relative aspect-[3/4] overflow-hidden bg-sage"
               >
                 <Image
-                  src={categoryVisuals[cat.slug]}
+                  src={
+                    cat.image ||
+                    categoryVisuals[cat.slug] ||
+                    fallbackCategoryImages[index % fallbackCategoryImages.length]
+                  }
                   alt={cat.name}
                   fill
                   className="object-cover transition duration-700 group-hover:scale-[1.05]"
@@ -149,7 +176,7 @@ export default function Home() {
           </Link>
         </div>
         <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {products.map((product) => (
+          {products.slice(0, 10).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -236,38 +263,42 @@ export default function Home() {
             label="Featured"
             className="min-h-[420px] lg:min-h-full"
           />
-          <div className="flex flex-col justify-center px-6 py-14 sm:px-10 lg:px-14">
-            <p className="text-xs tracking-[0.2em] text-maroon uppercase">
-              Spotlight
-            </p>
-            <h2 className="font-serif mt-2 text-3xl text-forest-deep sm:text-4xl">
-              {featured.name}
-            </h2>
-            <p className="mt-2 text-sm text-muted">{featured.tagline}</p>
-            <p className="mt-6 text-sm leading-relaxed text-ink/85">
-              {featured.descriptionEn}
-            </p>
-            <p className="mt-4 text-xl font-semibold text-ink">
-              {formatPrice(featured.price)}
-              <span className="ml-2 text-sm font-normal text-muted">
-                · {featured.weight}
-              </span>
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href={`/products/${featured.slug}`}
-                className="rounded-full bg-forest px-6 py-3 text-sm font-medium text-cream transition duration-300 hover:scale-[1.02] hover:bg-forest-deep active:scale-[0.98]"
-              >
-                View details
-              </Link>
-              <Link
-                href="/shop"
-                className="rounded-full border border-forest/25 px-6 py-3 text-sm font-medium text-forest transition duration-300 hover:bg-cream"
-              >
-                Shop all
-              </Link>
+          {featured && (
+            <div className="flex flex-col justify-center px-6 py-14 sm:px-10 lg:px-14">
+              <p className="text-xs tracking-[0.2em] text-maroon uppercase">
+                Spotlight
+              </p>
+              <h2 className="font-serif mt-2 text-3xl text-forest-deep sm:text-4xl">
+                {featured.name}
+              </h2>
+              <p className="mt-2 text-sm text-muted">{featured.tagline}</p>
+              <p className="mt-6 text-sm leading-relaxed text-ink/85">
+                {featured.descriptionEn}
+              </p>
+              <p className="mt-4 text-xl font-semibold text-ink">
+                {formatPrice(featured.price)}
+                {featured.weight ? (
+                  <span className="ml-2 text-sm font-normal text-muted">
+                    · {featured.weight}
+                  </span>
+                ) : null}
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  href={`/products/${featured.slug}`}
+                  className="rounded-full bg-forest px-6 py-3 text-sm font-medium text-cream transition duration-300 hover:scale-[1.02] hover:bg-forest-deep active:scale-[0.98]"
+                >
+                  View details
+                </Link>
+                <Link
+                  href="/shop"
+                  className="rounded-full border border-forest/25 px-6 py-3 text-sm font-medium text-forest transition duration-300 hover:bg-cream"
+                >
+                  Shop all
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -407,6 +438,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Journal / blogs — hidden when API returns none */}
+      <BlogSection blogs={homeBlogs} />
 
       {/* Contact CTA */}
       <section className="bg-maroon text-cream">

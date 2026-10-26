@@ -4,20 +4,17 @@ import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
 import ProductPurchase from "@/components/ProductPurchase";
-import {
-  getProduct,
-  getRelatedProducts,
-  products,
-} from "@/lib/products";
+import { getCatalogProduct, getCatalogRelated } from "@/lib/catalog";
+import { products as staticProducts } from "@/lib/products";
 import { formatPrice } from "@/lib/site";
 
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return staticProducts.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getCatalogProduct(slug);
   if (!product) return { title: "Product" };
   return {
     title: product.name,
@@ -37,11 +34,6 @@ function ProductFallback() {
           <div className="h-4 w-1/2 animate-pulse rounded bg-sage-deep/40" />
           <div className="mt-6 h-8 w-28 animate-pulse rounded bg-sage-deep/50" />
           <div className="mt-8 h-12 w-40 animate-pulse rounded-full bg-sage-deep/50" />
-          <div className="mt-6 space-y-2">
-            <div className="h-3 w-full animate-pulse rounded bg-sage-deep/40" />
-            <div className="h-3 w-5/6 animate-pulse rounded bg-sage-deep/40" />
-            <div className="h-3 w-4/6 animate-pulse rounded bg-sage-deep/40" />
-          </div>
         </div>
       </div>
     </div>
@@ -50,10 +42,19 @@ function ProductFallback() {
 
 async function ProductContent({ params }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getCatalogProduct(slug);
   if (!product) notFound();
 
-  const related = getRelatedProducts(product);
+  const related = await getCatalogRelated(product);
+
+  const hasIngredients = Boolean(product.ingredients || product.ingredientsBn);
+  const hasApplication =
+    (product.application?.length || 0) > 0 ||
+    (product.applicationBn?.length || 0) > 0;
+  const hasResults = Boolean(product.results);
+  const hasWarnings = Boolean(product.warnings);
+  const showDetails =
+    hasIngredients || hasApplication || hasResults || hasWarnings;
 
   return (
     <div>
@@ -70,7 +71,7 @@ async function ProductContent({ params }) {
           <ProductGallery images={product.images} name={product.name} />
           <div>
             <p className="text-xs tracking-[0.2em] text-gold uppercase">
-              {product.weight} · Handmade
+              {product.weight ? `${product.weight} · ` : ""}Handmade
             </p>
             <h1 className="font-serif mt-2 text-3xl text-forest-deep sm:text-4xl">
               {product.name}
@@ -91,46 +92,62 @@ async function ProductContent({ params }) {
           </div>
         </div>
 
-        <div className="mt-16 grid gap-10 border-t border-forest/10 pt-12 md:grid-cols-2">
-          <section>
-            <h2 className="font-serif text-2xl text-forest-deep">Ingredients</h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted">
-              {product.ingredients}
-            </p>
-            {product.ingredientsBn && (
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                {product.ingredientsBn}
-              </p>
+        {showDetails && (
+          <div className="mt-16 grid gap-10 border-t border-forest/10 pt-12 md:grid-cols-2">
+            {hasIngredients && (
+              <section>
+                <h2 className="font-serif text-2xl text-forest-deep">
+                  Ingredients
+                </h2>
+                {product.ingredients && (
+                  <p className="mt-3 text-sm leading-relaxed text-muted">
+                    {product.ingredients}
+                  </p>
+                )}
+                {product.ingredientsBn && (
+                  <p className="mt-2 text-sm leading-relaxed text-muted">
+                    {product.ingredientsBn}
+                  </p>
+                )}
+              </section>
             )}
-          </section>
-          <section>
-            <h2 className="font-serif text-2xl text-forest-deep">How to use</h2>
-            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted">
-              {product.application.map((step) => (
-                <li key={step}>• {step}</li>
-              ))}
-            </ul>
-            {product.applicationBn?.length > 0 && (
-              <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
-                {product.applicationBn.map((step) => (
-                  <li key={step}>• {step}</li>
-                ))}
-              </ul>
+            {hasApplication && (
+              <section>
+                <h2 className="font-serif text-2xl text-forest-deep">
+                  How to use
+                </h2>
+                <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted">
+                  {(product.application || []).map((step) => (
+                    <li key={step}>• {step}</li>
+                  ))}
+                </ul>
+                {(product.applicationBn?.length || 0) > 0 && (
+                  <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
+                    {product.applicationBn.map((step) => (
+                      <li key={step}>• {step}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
             )}
-          </section>
-          <section>
-            <h2 className="font-serif text-2xl text-forest-deep">Results</h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted">
-              {product.results}
-            </p>
-          </section>
-          <section>
-            <h2 className="font-serif text-2xl text-forest-deep">Warnings</h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted">
-              {product.warnings}
-            </p>
-          </section>
-        </div>
+            {hasResults && (
+              <section>
+                <h2 className="font-serif text-2xl text-forest-deep">Results</h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted">
+                  {product.results}
+                </p>
+              </section>
+            )}
+            {hasWarnings && (
+              <section>
+                <h2 className="font-serif text-2xl text-forest-deep">Warnings</h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted">
+                  {product.warnings}
+                </p>
+              </section>
+            )}
+          </div>
+        )}
       </div>
 
       {related.length > 0 && (

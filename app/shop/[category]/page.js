@@ -3,18 +3,19 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import {
-  categories,
-  getCategory,
-  getProductsByCategory,
-} from "@/lib/products";
+  getCatalogCategories,
+  getCatalogCategory,
+  getCatalogProductsByCategory,
+} from "@/lib/catalog";
+import { categories as staticCategories } from "@/lib/products";
 
-export function generateStaticParams() {
-  return categories.map((c) => ({ category: c.slug }));
+export async function generateStaticParams() {
+  return staticCategories.map((c) => ({ category: c.slug }));
 }
 
 export async function generateMetadata({ params }) {
   const { category: slug } = await params;
-  const category = getCategory(slug);
+  const category = await getCatalogCategory(slug);
   if (!category) return { title: "Category" };
   return {
     title: category.name,
@@ -43,10 +44,12 @@ function CategoryFallback() {
 
 async function CategoryContent({ params }) {
   const { category: slug } = await params;
-  const category = getCategory(slug);
+  const [category, categories, items] = await Promise.all([
+    getCatalogCategory(slug),
+    getCatalogCategories(),
+    getCatalogProductsByCategory(slug),
+  ]);
   if (!category) notFound();
-
-  const items = getProductsByCategory(slug);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">

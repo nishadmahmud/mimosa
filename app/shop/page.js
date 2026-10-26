@@ -1,13 +1,21 @@
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
-import { categories, products } from "@/lib/products";
+import {
+  getCatalogCategories,
+  getCatalogProducts,
+} from "@/lib/catalog";
 
 export const metadata = {
   title: "Shop",
   description: "Shop Mimosa Organic Solution handmade skincare and haircare.",
 };
 
-export default function ShopPage() {
+export default async function ShopPage() {
+  const [products, categories] = await Promise.all([
+    getCatalogProducts(),
+    getCatalogCategories(),
+  ]);
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
       <p className="text-xs tracking-[0.2em] text-gold uppercase">Shop</p>
@@ -15,8 +23,7 @@ export default function ShopPage() {
         All products
       </h1>
       <p className="mt-3 max-w-xl text-muted">
-        Five handmade essentials — cleanser, butters, hair oil, and lip care —
-        crafted in Bangladesh.
+        Handmade organic essentials — crafted in Bangladesh.
       </p>
 
       <div className="mt-8 flex flex-wrap gap-2">

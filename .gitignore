@@ -24,6 +24,10 @@
 .DS_Store
 *.pem
 
+# accidental nested Brand Empire copy (sibling project lives outside this repo)
+/brand-empire
+brand-empire/
+
 # debug
 npm-debug.log*
 yarn-debug.log*
