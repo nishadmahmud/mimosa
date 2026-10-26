@@ -1,17 +1,20 @@
-import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/site";
+import { FALLBACK_IMAGE } from "@/lib/media";
 import AddToCartButton from "./AddToCartButton";
+import SafeImage from "./SafeImage";
 
 export default function ProductCard({ product }) {
+  const src = product.images?.[0] || FALLBACK_IMAGE;
+
   return (
     <article className="product-lift group flex flex-col">
       <Link
         href={`/products/${product.slug}`}
         className="relative aspect-[4/5] overflow-hidden bg-sage"
       >
-        <Image
-          src={product.images[0]}
+        <SafeImage
+          src={src}
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"

@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import BlogSection from "@/components/BlogSection";
+import SafeImage from "@/components/SafeImage";
 import { getCatalogBlog, getCatalogBlogs } from "@/lib/catalog";
 
 export async function generateMetadata({ params }) {
@@ -38,7 +38,7 @@ async function BlogDetail({ params }) {
     <article>
       {blog.image && (
         <div className="relative h-56 w-full bg-sage sm:h-80 md:h-96">
-          <Image
+          <SafeImage
             src={blog.image}
             alt={blog.title}
             fill

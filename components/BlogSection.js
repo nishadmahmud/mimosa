@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import SafeImage from "./SafeImage";
 
 function formatDate(dateString) {
   if (!dateString) return "";
@@ -51,7 +51,7 @@ export default function BlogSection({ blogs, heading = true }) {
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-sage">
                 {blog.image ? (
-                  <Image
+                  <SafeImage
                     src={blog.image}
                     alt={blog.title}
                     fill

@@ -12,7 +12,7 @@ export default function AboutPage() {
     <div>
       <section className="relative min-h-[50vh] overflow-hidden bg-forest-deep">
         <Image
-          src="/images/brand/logo-beyoutiful.jpg"
+          src="/Images/brand/logo-beyoutiful.jpg"
           alt="Mimosa BEYOUTIFUL brand mark"
           fill
           className="object-cover opacity-80"
@@ -118,7 +118,7 @@ export default function AboutPage() {
           </div>
           <div className="relative aspect-[3/4] overflow-hidden bg-sage">
             <Image
-              src="/images/lifestyle/press-bangladesh-pratidin.jpg"
+              src="/Images/lifestyle/press-bangladesh-pratidin.jpg"
               alt="Mimosa featured in Bangladesh Pratidin"
               fill
               className="object-cover object-top"

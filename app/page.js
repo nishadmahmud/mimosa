@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BlogSection from "@/components/BlogSection";
 import ProductCard from "@/components/ProductCard";
+import SafeImage from "@/components/SafeImage";
 import VideoPanel from "@/components/VideoPanel";
 import {
   getCatalogBlogs,
@@ -43,18 +44,18 @@ const rituals = [
 ];
 
 const categoryVisuals = {
-  "face-care": "/images/lifestyle/skin-cleanser-flyer.jpg",
-  "body-care": "/images/lifestyle/hand-feet-flyer.jpg",
-  "hair-care": "/images/lifestyle/hair-solution-flyer.jpg",
-  "lip-care": "/images/products/lip-balm.jpg",
+  "face-care": "/Images/lifestyle/skin-cleanser-flyer.jpg",
+  "body-care": "/Images/lifestyle/hand-feet-flyer.jpg",
+  "hair-care": "/Images/lifestyle/hair-solution-flyer.jpg",
+  "lip-care": "/Images/products/lip-balm.jpg",
 };
 
 const fallbackCategoryImages = [
-  "/images/lifestyle/skin-cleanser-flyer.jpg",
-  "/images/lifestyle/hand-feet-flyer.jpg",
-  "/images/lifestyle/hair-solution-flyer.jpg",
-  "/images/products/lip-balm.jpg",
-  "/images/brand/lineup-green.jpg",
+  "/Images/lifestyle/skin-cleanser-flyer.jpg",
+  "/Images/lifestyle/hand-feet-flyer.jpg",
+  "/Images/lifestyle/hair-solution-flyer.jpg",
+  "/Images/products/lip-balm.jpg",
+  "/Images/brand/lineup-green.jpg",
 ];
 
 export default async function Home() {
@@ -81,7 +82,7 @@ export default async function Home() {
             muted
             loop
             playsInline
-            poster="/images/brand/lineup-green.jpg"
+            poster="/Images/brand/lineup-green.jpg"
             preload="metadata"
           >
             <source src="/videos/product-1.mp4" type="video/mp4" />
@@ -133,7 +134,7 @@ export default async function Home() {
                 href={`/shop/${cat.slug}`}
                 className="group relative aspect-[3/4] overflow-hidden bg-sage"
               >
-                <Image
+                <SafeImage
                   src={
                     cat.image ||
                     categoryVisuals[cat.slug] ||
@@ -200,19 +201,19 @@ export default async function Home() {
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             <VideoPanel
               src="/videos/product-2.mp4"
-              poster="/images/products/skin-cleanser-green.jpg"
+              poster="/Images/products/skin-cleanser-green.jpg"
               label="Skin cleanser"
               className="aspect-[3/4] md:col-span-1"
             />
             <VideoPanel
               src="/videos/product-3.mp4"
-              poster="/images/brand/lineup-orange.jpg"
+              poster="/Images/brand/lineup-orange.jpg"
               label="The lineup"
               className="aspect-[3/4] md:col-span-1"
             />
             <VideoPanel
               src="/videos/product-4.mp4"
-              poster="/images/products/hair-solution-yellow.jpg"
+              poster="/Images/products/hair-solution-yellow.jpg"
               label="Hair solution"
               className="aspect-[3/4] md:col-span-1"
             />
@@ -259,7 +260,7 @@ export default async function Home() {
         <div className="mx-auto grid max-w-6xl items-stretch gap-0 lg:grid-cols-2">
           <VideoPanel
             src="/videos/product-2.mp4"
-            poster="/images/products/hair-solution-yellow.jpg"
+            poster="/Images/products/hair-solution-yellow.jpg"
             label="Featured"
             className="min-h-[420px] lg:min-h-full"
           />
@@ -367,7 +368,7 @@ export default async function Home() {
             </div>
             <div className="group relative aspect-[4/5] overflow-hidden bg-sage-deep">
               <Image
-                src="/images/brand/lineup-orange.jpg"
+                src="/Images/brand/lineup-orange.jpg"
                 alt="Mimosa products on warm backdrop"
                 fill
                 className="object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
@@ -383,7 +384,7 @@ export default async function Home() {
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2">
           <div className="relative aspect-[4/3] overflow-hidden bg-cream">
             <Image
-              src="/images/lifestyle/press-bangladesh-pratidin.jpg"
+              src="/Images/lifestyle/press-bangladesh-pratidin.jpg"
               alt="Mimosa featured in Bangladesh Pratidin"
               fill
               className="object-cover object-top"
@@ -480,7 +481,7 @@ export default async function Home() {
             muted
             loop
             playsInline
-            poster="/images/brand/lineup-green.jpg"
+            poster="/Images/brand/lineup-green.jpg"
             preload="metadata"
           >
             <source src="/videos/product-1.mp4" type="video/mp4" />

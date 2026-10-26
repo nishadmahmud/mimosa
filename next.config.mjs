@@ -11,6 +11,9 @@ const nextConfig = {
     },
   },
   images: {
+    // Avoid intermittent production failures from the image optimizer
+    // (remote CDN timeouts / missing domains). Serve src URLs directly.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -24,7 +27,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "**.outletexpense.xyz",
         pathname: "/**",
       },
       {
@@ -35,6 +38,11 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "outletexpense.xyz",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
         pathname: "/**",
       },
     ],

@@ -1,8 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import SafeImage from "@/components/SafeImage";
 import { useCart } from "@/components/CartProvider";
+import { FALLBACK_IMAGE } from "@/lib/media";
 import { formatPrice } from "@/lib/site";
 
 export default function CartPage() {
@@ -40,8 +41,8 @@ export default function CartPage() {
         {items.map((item) => (
           <li key={item.id} className="flex flex-col gap-4 py-6 sm:flex-row sm:items-center">
             <div className="relative h-24 w-24 shrink-0 overflow-hidden bg-sage">
-              <Image
-                src={item.image}
+              <SafeImage
+                src={item.image || FALLBACK_IMAGE}
                 alt={item.name}
                 fill
                 className="object-cover"
