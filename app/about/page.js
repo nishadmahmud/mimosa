@@ -109,12 +109,20 @@ export default function AboutPage() {
             <p className="font-script mt-6 text-4xl text-forest">
               Reveal Your True Beauty
             </p>
-            <Link
-              href="/shop"
-              className="mt-8 inline-block rounded-full bg-forest px-6 py-3 text-sm font-medium text-cream hover:bg-forest-deep"
-            >
-              Shop products
-            </Link>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Link
+                href="/shop"
+                className="inline-block rounded-full bg-forest px-6 py-3 text-sm font-medium text-cream hover:bg-forest-deep"
+              >
+                Shop products
+              </Link>
+              <Link
+                href="/press"
+                className="text-sm font-medium text-forest underline-offset-4 hover:underline"
+              >
+                See press coverage
+              </Link>
+            </div>
           </div>
           <div className="relative aspect-[3/4] overflow-hidden bg-sage">
             <Image

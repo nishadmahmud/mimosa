@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import BlogSection from "@/components/BlogSection";
+import PressSection from "@/components/PressSection";
 import ProductCard from "@/components/ProductCard";
 import SafeImage from "@/components/SafeImage";
 import VideoPanel from "@/components/VideoPanel";
@@ -379,39 +380,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Press */}
-      <section className="border-y border-forest/10 bg-sage/60">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2">
-          <div className="relative aspect-[4/3] overflow-hidden bg-cream">
-            <Image
-              src="/Images/lifestyle/press-bangladesh-pratidin.jpg"
-              alt="Mimosa featured in Bangladesh Pratidin"
-              fill
-              className="object-cover object-top"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-          </div>
-          <div>
-            <p className="text-xs tracking-[0.2em] text-maroon uppercase">
-              In the press
-            </p>
-            <h2 className="font-serif mt-2 text-3xl text-forest-deep sm:text-4xl">
-              Trusted beauty advice
-            </h2>
-            <p className="mt-4 text-sm leading-relaxed text-muted">
-              Mimosa Organic Solution has been featured in Bangladesh Pratidin
-              with expert guidance from beauty specialist Monira Rahman —
-              natural ingredients, real routines, local trust.
-            </p>
-            <Link
-              href="/about"
-              className="mt-6 inline-block text-sm font-medium text-forest underline-offset-4 hover:underline"
-            >
-              Read our story
-            </Link>
-          </div>
-        </div>
-      </section>
+      <PressSection />
 
       {/* Promise / handmade */}
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
